@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -30,5 +29,8 @@
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background-color: #64748b; /* slate-500 */
+  }
+  .markdown > * {
+    all: revert;
   }
 }

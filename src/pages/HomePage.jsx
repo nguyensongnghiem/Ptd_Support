@@ -16,9 +16,9 @@ function HomePage() {
         {/* Logo DNP - giữ nguyên */}
         <div className="flex items-center justify-center pt-8 pb-4"> {/* Thêm padding trên dưới để tạo khoảng trống */}
           <img
-            src="/images/logo_ptd.png"
+            src="/images/mobifone.png"
             alt="CraneCare"
-            className="object-cover object-center transition-transform duration-300 ease-in-out h-full w-24"
+            className="object-cover object-center transition-transform duration-300 ease-in-out h-full w-30"
           />
         </div>
 
@@ -31,15 +31,15 @@ function HomePage() {
             {/* Logo App (CraneCare) */}
             <div className="w-full max-w-[300px] lg:max-w-[350px] p-4 flex flex-col items-center justify-center text-center"> {/* Thêm text-center và flex-col items-center justify-center */}
               <img
-                src="/images/app_logo.png"
+                src="/images/logo_ptd_noBg.png"
                 alt="CraneCare"
-                className="object-cover object-center transition-transform duration-300 ease-in-out h-24 w-24 mb-2"
+                className="object-cover object-center transition-transform duration-300 ease-in-out h-30 w-30 mb-2"
               />
-              <img
+              {/* <img
                 src="/images/text_crane_care.png"
                 alt="CraneCare"
                 className="w-full h-auto object-cover object-center transition-transform duration-300 ease-in-out"
-              />
+              /> */}
               
             </div>
             

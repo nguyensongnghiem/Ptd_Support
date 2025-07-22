@@ -17,6 +17,7 @@
     "@table-library/react-table-library": "^4.1.7",
     "@tabler/icons": "^3.11.0",
     "@tabler/icons-react": "^3.11.0",
+    "@tailwindcss/typography": "^0.5.16",
     "@tanstack/react-table": "^8.19.3",
     "ag-grid-react": "^32.2.0",
     "axios": "^1.7.2",
@@ -47,6 +48,7 @@
     "react-toastify": "^10.0.5",
     "react-window": "^1.8.10",
     "recharts": "^2.12.7",
+    "remark-gfm": "^4.0.1",
     "trans-react": "file:",
     "xlsx": "^0.18.5",
     "yup": "^1.4.0"

@@ -1,95 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { v4 as uuidv4 } from "uuid";
 import { FaPaperPlane, FaRobot, FaUserCircle } from "react-icons/fa";
 import { Typewriter } from "react-simple-typewriter";
-import { Switch } from "@material-tailwind/react"; // Component Switch có thể cần cấu hình Material Tailwind
+import { Switch, Typography } from "@material-tailwind/react"; // Component Switch có thể cần cấu hình Material Tailwind
 import { Link } from "react-router-dom"; // Giả định bạn có component Link và Header
 import Header from "../components/Header"; // Đảm bảo đường dẫn này đúng
-
+import commands from "../commands/commands.js"; // Điều chỉnh đường dẫn nếu cần
 // Lấy URL từ biến môi trường
 const GENERAL_CHAT_WEBHOOK_URL = import.meta.env.VITE_GENERAL_CHAT_WEBHOOK_URL;
 const COMMAND_WEBHOOK_URL = import.meta.env.VITE_COMMAND_WEBHOOK_URL;
-
-// Định nghĩa các lệnh slash command
-const commands = [
-  {
-    name: "help",
-    description: "Hiển thị danh sách các lệnh.",
-    category: "Chung",
-    aliases: ["trợ giúp", "h"],
-    usage: "/help",
-    internal: true, // Lệnh này sẽ được xử lý nội bộ, không gửi đi webhook
-  },
-  {
-    name: "get-optical",
-    description: "Tra cứu mức thu router.",
-    category: "Tra cứu thông tin",
-    aliases: ["mức thu", "optical"],
-    usage: "/get-optical [Tên router]",
-    params: [
-      { name: "Tên router", required: true, type: "string", minLength: 1 },
-    ],
-    internal: false, // Lệnh này sẽ gửi đi webhook
-  },
-  {
-    name: "get-interface",
-    description: "Tra cứu thông tin interface router.",
-    category: "Tra cứu thông tin",
-    aliases: ["interface", "port"],
-    usage: "/get-interface [Tên router]",
-    params: [
-      { name: "Tên router", required: true, type: "string", minLength: 1 },
-    ],
-    internal: false, // Lệnh này sẽ gửi đi webhook
-  },
-  {
-    name: "diagnose",
-    description: "Chẩn đoán sự cố cẩu.",
-    category: "Sửa chữa cẩu",
-    aliases: ["chẩn đoán", "suco"],
-    usage: "/diagnose [Mô tả sự cố]",
-    params: [
-      { name: "Mô tả sự cố", required: true, type: "string", minLength: 5 },
-    ],
-    internal: false, // Lệnh này sẽ gửi đi webhook
-  },
-  {
-    name: "manual",
-    description: "Tìm kiếm hướng dẫn sử dụng cẩu theo model.",
-    category: "Sửa chữa cẩu",
-    aliases: ["hướng dẫn", "sổ tay", "doc"],
-    usage: "/manual [Model cẩu]",
-    params: [
-      { name: "Model cẩu", required: true, type: "string", minLength: 3 },
-    ],
-    internal: false, // Lệnh này sẽ gửi đi webhook
-  },
-  {
-    name: "contact",
-    description: "Thông tin liên hệ hỗ trợ kỹ thuật.",
-    category: "Hỗ trợ",
-    aliases: ["liên hệ", "hotline"],
-    usage: "/contact",
-    internal: true, // Lệnh này sẽ được xử lý nội bộ
-  },
-  {
-    name: "status",
-    description: "Kiểm tra trạng thái hệ thống.",
-    category: "Hỗ trợ",
-    aliases: ["trạng thái", "tinh_trang"],
-    usage: "/status",
-    internal: true, // Lệnh này sẽ được xử lý nội bộ
-  },
-  {
-    name: "about",
-    description: "Thông tin về Bot.",
-    category: "Chung",
-    aliases: ["về_chúng_tôi", "thông_tin"],
-    usage: "/about",
-    internal: true, // Lệnh này sẽ được xử lý nội bộ
-  },
-];
 
 // Hàm tạo Session ID duy nhất
 function generateSessionId() {
@@ -105,7 +26,8 @@ function ChatbotPage() {
   const [darkMode, setDarkMode] = useState(false); // State cho Dark Mode (có thể uncomment Switch để bật)
   const [commandSuggestions, setCommandSuggestions] = useState({});
   const [isCommandMode, setIsCommandMode] = useState(false);
-  const [highlightedSuggestionIndex, setHighlightedSuggestionIndex] = useState(-1);
+  const [highlightedSuggestionIndex, setHighlightedSuggestionIndex] =
+    useState(-1);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -137,6 +59,13 @@ function ChatbotPage() {
     setMessages((msgs) => [...msgs, botMsg]);
     setTypingOutput(""); // Xóa typing output sau khi thêm vào messages
   }, [typingOutput]);
+
+  // Tự động focus vào input sau khi isLoading chuyển từ true về false
+  useEffect(() => {
+    if (!isLoading && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isLoading, messages]); // Thêm `messages` vào dependency array cũng giúp kích hoạt lại focus sau khi tin nhắn mới được thêm.
 
   // Xử lý thay đổi input và hiển thị gợi ý lệnh
   const handleInputChange = (e) => {
@@ -183,7 +112,9 @@ function ChatbotPage() {
               return acc;
             }, {})
           )
-            .map(([category, cmdList]) => `**${category}**\n` + cmdList.join("\n"))
+            .map(
+              ([category, cmdList]) => `**${category}**\n` + cmdList.join("\n")
+            )
             .join("\n\n")
         );
       case "contact":
@@ -223,7 +154,9 @@ function ChatbotPage() {
       );
 
       if (!foundCommand) {
-        setTypingOutput(`Lệnh "${input}" không hợp lệ. Vui lòng gõ \`/help\` để xem các lệnh có sẵn.`);
+        setTypingOutput(
+          `Lệnh "${input}" không hợp lệ. Vui lòng gõ \`/help\` để xem các lệnh có sẵn.`
+        );
         setIsLoading(false);
         return;
       }
@@ -231,7 +164,7 @@ function ChatbotPage() {
       // --- BẮT ĐẦU LOGIC XÁC THỰC THAM SỐ TRƯỚC KHI GỬI ---
       let validationError = null;
       if (foundCommand.params) {
-        const requiredParams = foundCommand.params.filter(p => p.required);
+        const requiredParams = foundCommand.params.filter((p) => p.required);
         if (args.length < requiredParams.length) {
           validationError = `Thiếu tham số bắt buộc. Cú pháp đúng: \`${foundCommand.usage}\``;
         } else {
@@ -244,13 +177,20 @@ function ChatbotPage() {
               break;
             }
             if (argValue) {
-              if (paramDef.type === "string" && paramDef.minLength && argValue.length < paramDef.minLength) {
+              if (
+                paramDef.type === "string" &&
+                paramDef.minLength &&
+                argValue.length < paramDef.minLength
+              ) {
                 validationError = `Tham số "${paramDef.name}" phải có ít nhất ${paramDef.minLength} ký tự.`;
                 break;
               }
-              if (paramDef.options && !paramDef.options.includes(argValue.toLowerCase())) {
-                  validationError = `Tham số "${paramDef.name}" không hợp lệ. Chỉ chấp nhận: ${paramDef.options.join(", ")}.`;
-                  break;
+              if (
+                paramDef.options &&
+                !paramDef.options.includes(argValue.toLowerCase())
+              ) {
+                validationError = `Tham số "${paramDef.name}" không hợp lệ. Chỉ chấp nhận: ${paramDef.options.join(", ")}.`;
+                break;
               }
             }
           }
@@ -266,7 +206,10 @@ function ChatbotPage() {
 
       // Nếu lệnh được đánh dấu là internal, xử lý nội bộ và không gửi đi webhook
       if (foundCommand.internal) {
-        const response = await handleInternalCommand(foundCommand.name, fullArgs);
+        const response = await handleInternalCommand(
+          foundCommand.name,
+          fullArgs
+        );
         setTypingOutput(response);
         setIsLoading(false);
         return; // Dừng hàm sau khi xử lý nội bộ
@@ -284,8 +227,8 @@ function ChatbotPage() {
           // Chỉ thêm vào options nếu có giá trị (không thêm tham số trống)
           if (argValue !== undefined && argValue !== "") {
             commandOptions.push({
-              name: paramDef.name.toLowerCase().replace(/\s/g, '_'), // Chuyển tên tham số thành snake_case
-              value: argValue
+              name: paramDef.name.toLowerCase().replace(/\s/g, "_"), // Chuyển tên tham số thành snake_case
+              value: argValue,
             });
           }
         });
@@ -295,7 +238,8 @@ function ChatbotPage() {
       payload = {
         action: "sendCommand", // Action để n8n phân loại
         sessionId,
-        data: { // Cấu trúc data theo yêu cầu (bỏ id và type)
+        data: {
+          // Cấu trúc data theo yêu cầu (bỏ id và type)
           name: foundCommand.name,
           options: commandOptions,
         },
@@ -341,14 +285,19 @@ function ChatbotPage() {
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      const botText = data?.output || "⚠️ Không nhận được phản hồi hợp lệ từ dịch vụ.";
+      const botText =
+        data?.output || "⚠️ Không nhận được phản hồi hợp lệ từ dịch vụ.";
       console.log("Bot response:", botText);
-      setTypingOutput("```"+botText.full_data+"```" || botText); // Cập nhật phản hồi cuối cùng từ webhook
+      if (payload.action === "sendCommand") {
+        // Nếu là lệnh, chỉ cập nhật phản hồi cuối cùng từ webhook
+        setTypingOutput(botText.full_data); // Cập nhật phản hồi cuối cùng từ webhook
+      } else setTypingOutput(botText);
     } catch (err) {
       console.error("Lỗi khi gửi yêu cầu đến webhook:", err);
       setTypingOutput("❌ Có lỗi xảy ra khi kết nối. Hãy thử lại sau.");
     } finally {
       setIsLoading(false);
+      // Dòng focus đã được chuyển sang useEffect riêng biệt.
     }
   };
 
@@ -410,8 +359,8 @@ function ChatbotPage() {
         bg: "bg-gray-100",
         card: "bg-white text-gray-900 border-gray-200",
         input: "bg-white text-gray-800 border-gray-300 placeholder-gray-400",
-        botBubble: "bg-gray-200 text-gray-800 border border-gray-300",
-        userBubble: "bg-gradient-to-br from-cyan-500 to-blue-500 text-white",
+        botBubble: "bg-gray-200 text-secondary-gray border border-gray-300",
+        userBubble: "bg-gradient-to-br from-light-bg-begin to-light-bg-end text-white",
         header: "bg-white border-gray-200 text-cyan-600",
       };
 
@@ -437,11 +386,9 @@ function ChatbotPage() {
             className={`flex items-center justify-between px-6 py-4 ${themeClasses.header} md:border-b md:border-gray-200`}
           >
             <div className="flex flex-row text-xl items-center gap-2 w-full justify-between">
-              <img
-                className="h-8 md:h-11 object-cover object-center"
-                src="/images/text_IQ.png" // Đảm bảo đường dẫn logo của bạn đúng
-                alt="CraneIQ logo"
-              />
+              <Typography className="font-bold text-2xl text-secondary-gray">
+                Trợ lý AI - Hỗ trợ kỹ thuật
+              </Typography>
               {/* Nút bật/tắt Dark Mode (có thể uncomment nếu muốn dùng) */}
               {/* <Switch
                 onClick={() => setDarkMode(!darkMode)}
@@ -473,7 +420,7 @@ function ChatbotPage() {
                 >
                   {msg.sender === "bot" && (
                     <img
-                      src="/images/logo_IQ.png" // Đảm bảo đường dẫn logo bot đúng
+                      src="/images/ptd_ai2.png" // Đảm bảo đường dẫn logo bot đúng
                       className="h-5 w-5 object-cover object-center rounded-full flex-shrink-0"
                       alt="Bot Logo"
                     />
@@ -482,29 +429,30 @@ function ChatbotPage() {
                     <FaUserCircle className="text-xl text-gray-400 flex-shrink-0" />
                   )}
                   <div
-                    className={`w-full-[80%] max-w-[80%] px-4 py-2 rounded-xl text-md leading-relaxed shadow ${
+                    className={`w-full max-w-full px-4 py-2 rounded-xl text-md leading-relaxed shadow prose ${
                       msg.sender === "user"
                         ? `${themeClasses.userBubble} rounded-br-none`
                         : `${themeClasses.botBubble} rounded-bl-none`
                     }`}
                   >
-                    <ReactMarkdown>{msg.text}</ReactMarkdown>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {msg.text}
+                    </ReactMarkdown>
                   </div>
                 </div>
               </div>
             ))}
-
             {/* Hiệu ứng "Đang suy nghĩ..." khi bot loading */}
             {isLoading && (
               <div className="flex items-center gap-2 text-gray-500 text-md animate-pulse ">
                 <img
-                  src="/images/logo_IQ.png" // Đảm bảo đường dẫn logo bot đúng
+                  src="/images/ptd_ai2.png" // Đảm bảo đường dẫn logo bot đúng
                   className="h-5 w-5 object-cover object-center rounded-full flex-shrink-0"
                   alt="Bot Logo"
                 />
                 <span>
                   <Typewriter
-                    words={["Đang suy nghĩ ..."]}
+                    words={["Chờ tý nhá ..."]}
                     loop={1}
                     typeSpeed={80}
                     deleteSpeed={50}
@@ -524,14 +472,13 @@ function ChatbotPage() {
               >
                 {Object.entries(commandSuggestions).map(([category, cmds]) => (
                   <div key={category} className="mb-2">
-                    <h4 className="text-sm font-semibold text-gray-500 mb-1">
+                    <h4 className="text-sm font-semibold text-secondary-gray mb-1">
                       {category}
                     </h4>
                     {cmds.map((cmd, cmdIdx) => {
                       // Tính toán index tổng thể để tô sáng đúng khi dùng phím
-                      const allFlatSuggestions = Object.values(
-                        commandSuggestions
-                      ).flat();
+                      const allFlatSuggestions =
+                        Object.values(commandSuggestions).flat();
                       const overallIndex = allFlatSuggestions.findIndex(
                         (s) => s.name === cmd.name
                       );
@@ -540,14 +487,12 @@ function ChatbotPage() {
                         <div
                           key={cmd.name}
                           className={`flex items-center gap-2 p-2 rounded-md cursor-pointer transition-colors duration-200 ${
-                            darkMode
-                              ? "hover:bg-gray-700"
-                              : "hover:bg-gray-100"
+                            darkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
                           } ${
                             highlightedSuggestionIndex === overallIndex
                               ? darkMode
                                 ? "bg-gray-700"
-                                : "bg-gray-100"
+                                : "bg-gray-200"
                               : "bg-gray-50" // Màu nền mặc định cho suggestion
                           }`}
                           onClick={() => {
@@ -558,7 +503,7 @@ function ChatbotPage() {
                             inputRef.current?.focus(); // Giữ focus vào input
                           }}
                         >
-                          <span className="font-mono text-cyan-600">
+                          <span className="font-mono font-semibold text-gray-600">
                             /{cmd.name}
                           </span>
                           <span className="text-sm text-gray-600">
@@ -582,19 +527,19 @@ function ChatbotPage() {
                 onKeyDown={handleKeyDown}
                 disabled={isLoading}
                 placeholder="Nhập tin nhắn hoặc gõ '/' để dùng lệnh..."
-                className={`flex-1 px-4 py-2 pr-12 rounded-lg ${themeClasses.input} focus:outline-none focus:ring-2 focus:ring-cyan-400 text-md border border-gray-100 shadow-md transition-all duration-200 ease-in-out`}
+                className={`flex-1 px-4 py-2 pr-12 rounded-lg ${themeClasses.input} focus:outline-none focus:ring-2 focus:ring-light-bg-end text-md border border-gray-100 shadow-md transition-all duration-200 ease-in-out`}
               />
               <button
                 onClick={sendMessage}
                 disabled={isLoading}
                 className={`absolute right-2 top-1/2 -translate-y-1/2
                                flex items-center justify-center h-8 w-8 rounded-full
-                               bg-gradient-to-r from-cyan-500 to-blue-500 text-white
+                               bg-gradient-to-r from-light-bg-begin to-light-bg-end text-white
                                hover:from-cyan-600 hover:to-blue-600 transition-all duration-200 ease-in-out
                                shadow-md
                                ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
               >
-                <FaPaperPlane className="text-md" />
+                <FaPaperPlane className="text-md " />
               </button>
             </div>
           </div>

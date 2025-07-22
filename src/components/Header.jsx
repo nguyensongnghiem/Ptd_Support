@@ -8,13 +8,13 @@ const Header = () => {
       <Link to="/" className="flex items-center">
         {" "}
         {/* Thêm flex items-center để giữ ảnh và text logo thẳng hàng nếu có */}
-        <img src="/images/app_logo.png" alt="logo" className="h-10 mr-3" />
+        <img src="/images/logo_ptd_noBg.png" alt="logo" className="h-12 mr-3" />
         {/* Nếu bạn muốn có text bên cạnh logo, hãy thêm vào đây */}
         {/* <span className="text-lg font-bold text-blue-800">Tên trang chủ của bạn</span> */}
       </Link>
       {/* Thẻ span cũ có vẻ trống, tôi sẽ giữ nó nếu bạn có ý định dùng sau này, hoặc có thể xóa đi */}
       <Link to="/" className="flex items-center">
-        <img src="/images/cang_logo.png" alt="logo" className="h-10 mr-3" />
+        <img src="/images/mobifone.png" alt="logo" className="h-8 mr-3" />
       </Link>
       {/* <span className="text-lg font-bold text-blue-800">
       </span> */}
