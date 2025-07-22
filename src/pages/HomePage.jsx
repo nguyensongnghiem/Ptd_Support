@@ -16,7 +16,7 @@ function HomePage() {
         {/* Logo DNP - giữ nguyên */}
         <div className="flex items-center justify-center pt-8 pb-4"> {/* Thêm padding trên dưới để tạo khoảng trống */}
           <img
-            src="/images/logo DNP.png"
+            src="/images/logo_ptd.png"
             alt="CraneCare"
             className="object-cover object-center transition-transform duration-300 ease-in-out h-full w-24"
           />
