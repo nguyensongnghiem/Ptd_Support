@@ -29,6 +29,51 @@ const commands = [
     ],
     internal: false, // Lệnh này sẽ gửi đi webhook
   },
+  {
+    name: "get-hardware",
+    description: "Tra cứu thông tin phần cứng router.",
+    category: "Tra cứu thông tin",
+    aliases: ["hardware", "card"],
+    usage: "/get-hardware [Tên router]",
+    params: [
+      { name: "Tên router", required: true, type: "string", minLength: 1 },
+    ],
+    internal: false, // Lệnh này sẽ gửi đi webhook
+  },
+  {
+    name: "get-alarm",
+    description: "Tra cứu thông tin cảnh báo router.",
+    category: "Tra cứu thông tin",
+    aliases: ["alarm", "warning"],
+    usage: "/get-alarm [Tên router]",
+    params: [
+      { name: "Tên router", required: true, type: "string", minLength: 1 },
+    ],
+    internal: false, // Lệnh này sẽ gửi đi webhook
+  },
+  {
+    name: "ping",
+    description: "Ping đến thiết bị router từ server.",
+    category: "Tra cứu thông tin",
+    aliases: ["ping", "trace"],
+    usage: "/ping [Tên router]",
+    params: [
+      { name: "Tên router", required: true, type: "string", minLength: 1 },
+    ],
+    internal: false, // Lệnh này sẽ gửi đi webhook
+  },
+  {
+    name: "get-fo",
+    description: "Tra cứu thông tin tuyến cáp theo Site ID.",
+    category: "Tra cứu thông tin",
+    aliases: ["fo", "cable"],
+    usage: "/get-fo [Site ID]",
+    params: [
+      { name: "Site ID", required: true, type: "string", minLength: 1 },
+    ],
+    internal: false, // Lệnh này sẽ gửi đi webhook
+  },
+  
   
   {
     name: "contact",

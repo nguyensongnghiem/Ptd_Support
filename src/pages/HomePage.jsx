@@ -5,6 +5,7 @@ import {
   DocumentTextIcon,
   ChatBubbleLeftRightIcon,
 } from "@heroicons/react/24/outline";
+import { T } from "@table-library/react-table-library/index-a318de9b";
 
 function HomePage() {
   return (
@@ -14,7 +15,9 @@ function HomePage() {
       {/* Container chính với padding và căn giữa */}
       <div className="container mx-auto p-4 flex flex-col flex-grow">
         {/* Logo DNP - giữ nguyên */}
-        <div className="flex items-center justify-center pt-8 pb-4"> {/* Thêm padding trên dưới để tạo khoảng trống */}
+        <div className="flex items-center justify-center pt-8 pb-4">
+          {" "}
+          {/* Thêm padding trên dưới để tạo khoảng trống */}
           <img
             src="/images/mobifone.png"
             alt="CraneCare"
@@ -27,9 +30,13 @@ function HomePage() {
         {/* items-center và justify-center để căn giữa nội dung bên trong */}
         <div className="flex flex-grow items-center justify-center">
           {/* Vẫn giữ flex-col md:flex-row để các logo xếp hàng ngang trên desktop */}
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4 w-full max-w-4xl"> {/* Thêm max-w để giới hạn chiều rộng tổng thể */}
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 w-full max-w-4xl">
+            {" "}
+            {/* Thêm max-w để giới hạn chiều rộng tổng thể */}
             {/* Logo App (CraneCare) */}
-            <div className="w-full max-w-[300px] lg:max-w-[350px] p-4 flex flex-col items-center justify-center text-center"> {/* Thêm text-center và flex-col items-center justify-center */}
+            <div className="w-full max-w-[300px] lg:max-w-[350px] p-4 flex flex-col items-center justify-center text-center">
+              {" "}
+              {/* Thêm text-center và flex-col items-center justify-center */}
               <img
                 src="/images/logo_ptd_noBg.png"
                 alt="CraneCare"
@@ -40,30 +47,36 @@ function HomePage() {
                 alt="CraneCare"
                 className="w-full h-auto object-cover object-center transition-transform duration-300 ease-in-out"
               /> */}
-              
             </div>
-            
             {/* Logo Library */}
-            <div className="w-full max-w-[170px] lg:max-w-[220px] p-4 flex flex-col items-center justify-center text-center"> {/* Thêm flex-col items-center justify-center text-center */}
+            <div className="w-full max-w-[170px] lg:max-w-[220px] p-4 flex flex-col items-center justify-center text-center transition-transform duration-300 ease-in-out hover:scale-110">
+              {" "}
+              {/* Thêm flex-col items-center justify-center text-center */}
               <Link to="/pdf-viewer">
                 <img
-                  src="/images/panel_library.png"
+                  src="/images/ptd_logo_libs.png"
                   alt="Crane Library"
-                  className="w-full h-auto object-cover object-center transition-transform duration-300 ease-in-out hover:scale-110"
+                  className="w-full h-auto object-cover object-center "
                 />
+                <Typography className="mt-2 text-secondary-gray" variant="h5">
+                  Thư viện tài liệu
+                </Typography>
               </Link>
-              
             </div>
-            
             {/* Logo IQ */}
-            <div className="w-full max-w-[170px] lg:max-w-[220px] p-4 flex flex-col items-center justify-center text-center"> {/* Thêm flex-col items-center justify-center text-center */}
+            <div className="w-full max-w-[170px] lg:max-w-[220px] p-4 flex flex-col items-center justify-center text-center transition-transform duration-300 ease-in-out hover:scale-110">
+              {" "}
+              {/* Thêm flex-col items-center justify-center text-center */}
               <Link to="/chatbot">
                 <img
-                  src="/images/panel_IQ.png"
+                  src="/images/ptd_logo_chatbot.png"
                   alt="Crane IQ"
-                  className="w-full h-auto object-fit object-center transition-transform duration-300 ease-in-out hover:scale-110"
+                  className="w-full h-auto object-fit object-center "
                 />
-              </Link>             
+                <Typography className="mt-2 text-secondary-gray" variant="h5">
+                  Chat với AI
+                </Typography>
+              </Link>
             </div>
           </div>
         </div>
