@@ -130,17 +130,21 @@ function PdfViewerPage() {
     <div className="flex flex-col h-screen">
       <Header />
       <div className="flex flex-col bg-gray-300 h-[calc(100vh-57px)] justify-center">
-        <div className= {`flex-1 grid grid-cols-1 lg:grid-cols-4 h-full`}>
+        <div className={`flex-1 grid grid-cols-1 lg:grid-cols-4 h-full`}>
           {/* ✅ chỉ Hiển thị PdfList full màn hình ở mobile / trên desktop hiển thị như 1 sidebar */}
-          <div className={`shadow-lg border border-gray-200 h-full min-h-[57vh] lg:col-span-1 flex-col ${themeClasses.card} rounded-none `}> 
+          <div
+            className={`shadow-lg border border-gray-200 h-full min-h-[57vh] lg:col-span-1 flex-col ${themeClasses.card} rounded-none `}
+          >
             <div className="p-4 flex flex-col h-full overflow-hidden">
               {/* Logo nằm bên trái, nhỏ vừa và có padding dưới */}
               <div className="flex items-center justify-start mb-4">
-                <img
-                  src="/images/text_library.png"
-                  alt="Library logo"
-                  className="h-10 w-auto object-contain" // chiều cao 12, giữ nguyên tỉ lệ
-                />
+                <Typography
+                  variant="h5"  
+                  className="text-gray-800 font-semibold flex items-center gap-2"
+                >
+                  
+                  Thư viện tài liệu
+                </Typography>
               </div>
 
               <div className="flex-1 overflow-y-auto custom-scrollbar h-full">
@@ -158,11 +162,9 @@ function PdfViewerPage() {
             <div className="w-full flex-1 flex flex-col h-full overflow-hidden">
               {!selectedPdfUrl ? (
                 <div className="flex items-center justify-center h-full bg-white text-blue-700 flex-col">
-                  <img
-                    src="/images/logo_text_library.png"
-                    alt="haha"
-                    className="w-1/3 h-auto object-cover object-center mb-4"
-                  />
+                  <Typography variant="h5" className="mb-4">
+                    Thư viện tài liệu kỹ thuật
+                  </Typography>
                 </div>
               ) : (
                 <PdfViewerIframe pdfUrl={selectedPdfUrl} />

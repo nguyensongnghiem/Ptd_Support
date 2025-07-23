@@ -381,7 +381,6 @@ function ChatbotPage() {
         <div
           className={`w-full h-full flex flex-col overflow-hidden border
                      ${themeClasses.card}
-                     md:rounded-xl md:shadow-xl
                      rounded-none shadow-none                    
                      `}
         >

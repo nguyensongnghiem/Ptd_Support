@@ -68,13 +68,21 @@ const commands = [
     category: "Tra cứu thông tin",
     aliases: ["fo", "cable"],
     usage: "/get-fo [Site ID]",
+    params: [{ name: "Site ID", required: true, type: "string", minLength: 1 }],
+    internal: false, // Lệnh này sẽ gửi đi webhook
+  },
+  {
+    name: "get-cpu-usage",
+    description: "Tra cứu thông tin tải cpu router.",
+    category: "Tra cứu thông tin",
+    aliases: ["cpu", "usage"],
+    usage: "/get-cpu-usage [Tên router]",
     params: [
-      { name: "Site ID", required: true, type: "string", minLength: 1 },
+      { name: "Tên router", required: true, type: "string", minLength: 1 },
     ],
     internal: false, // Lệnh này sẽ gửi đi webhook
   },
-  
-  
+
   {
     name: "contact",
     description: "Thông tin liên hệ hỗ trợ kỹ thuật.",

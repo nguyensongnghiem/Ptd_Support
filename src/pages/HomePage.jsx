@@ -15,13 +15,13 @@ function HomePage() {
       {/* Container chính với padding và căn giữa */}
       <div className="container mx-auto flex flex-col flex-grow">
         {/* Logo DNP - giữ nguyên */}
-        <div className="flex items-center justify-center pt-8 pb-4">
+        <div className="flex items-center justify-center pt-4 pb-4">
           {" "}
           {/* Thêm padding trên dưới để tạo khoảng trống */}
           <img
             src="/images/mobifone.png"
             alt="Mobifone Logo"
-            className="object-cover object-center transition-transform duration-300 ease-in-out h-full w-30"
+            className="object-cover object-center transition-transform duration-300 ease-in-out h-full w-25"
           />
         </div>
 
@@ -34,7 +34,7 @@ function HomePage() {
             {" "}
             {/* Thêm max-w để giới hạn chiều rộng tổng thể */}
             {/* Logo App (CraneCare) */}
-            <div className="w-full max-w-[300px] lg:max-w-[350px] p-4 flex flex-col items-center justify-center text-center">
+            <div className="w-full max-w-[250px] lg:max-w-[250px] p-4 flex flex-col items-center justify-center text-center">
               {" "}
               {/* Thêm text-center và flex-col items-center justify-center */}
               <img
