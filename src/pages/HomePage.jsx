@@ -13,14 +13,14 @@ function HomePage() {
     // và sử dụng flex-col để các phần tử xếp dọc
     <div className="flex flex-col min-h-screen bg-gray-300">
       {/* Container chính với padding và căn giữa */}
-      <div className="container mx-auto p-4 flex flex-col flex-grow">
+      <div className="container mx-auto flex flex-col flex-grow">
         {/* Logo DNP - giữ nguyên */}
         <div className="flex items-center justify-center pt-8 pb-4">
           {" "}
           {/* Thêm padding trên dưới để tạo khoảng trống */}
           <img
             src="/images/mobifone.png"
-            alt="CraneCare"
+            alt="Mobifone Logo"
             className="object-cover object-center transition-transform duration-300 ease-in-out h-full w-30"
           />
         </div>
@@ -30,7 +30,7 @@ function HomePage() {
         {/* items-center và justify-center để căn giữa nội dung bên trong */}
         <div className="flex flex-grow items-center justify-center">
           {/* Vẫn giữ flex-col md:flex-row để các logo xếp hàng ngang trên desktop */}
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4 w-full max-w-4xl">
+          <div className="h-full flex flex-col md:flex-row items-center justify-center gap-4 w-full max-w-4xl">
             {" "}
             {/* Thêm max-w để giới hạn chiều rộng tổng thể */}
             {/* Logo App (CraneCare) */}
@@ -49,7 +49,7 @@ function HomePage() {
               /> */}
             </div>
             {/* Logo Library */}
-            <div className="w-full max-w-[170px] lg:max-w-[220px] p-4 flex flex-col items-center justify-center text-center transition-transform duration-300 ease-in-out hover:scale-110">
+            <div className="w-full max-w-[100px] lg:max-w-[150px] p-4 flex flex-col items-center justify-center text-center transition-transform duration-300 ease-in-out hover:scale-110">
               {" "}
               {/* Thêm flex-col items-center justify-center text-center */}
               <Link to="/pdf-viewer">
@@ -64,7 +64,7 @@ function HomePage() {
               </Link>
             </div>
             {/* Logo IQ */}
-            <div className="w-full max-w-[170px] lg:max-w-[220px] p-4 flex flex-col items-center justify-center text-center transition-transform duration-300 ease-in-out hover:scale-110">
+            <div className="w-full max-w-[100px] lg:max-w-[150px] p-4 flex flex-col items-center justify-center text-center transition-transform duration-300 ease-in-out hover:scale-110">
               {" "}
               {/* Thêm flex-col items-center justify-center text-center */}
               <Link to="/chatbot">

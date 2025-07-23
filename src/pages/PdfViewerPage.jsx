@@ -129,10 +129,10 @@ function PdfViewerPage() {
   return (
     <div className="flex flex-col h-screen">
       <Header />
-      <div className="flex flex-col md:px-6 md:py-6 bg-gray-300 h-[calc(100vh-57px)] justify-center">
-        <div className= {`flex-1 grid grid-cols-1 lg:grid-cols-4 gap-6 h-full`}>
+      <div className="flex flex-col bg-gray-300 h-[calc(100vh-57px)] justify-center">
+        <div className= {`flex-1 grid grid-cols-1 lg:grid-cols-4 h-full`}>
           {/* ✅ chỉ Hiển thị PdfList full màn hình ở mobile / trên desktop hiển thị như 1 sidebar */}
-          <div className={`shadow-lg border border-gray-200 h-full min-h-[57vh] lg:col-span-1 flex-col ${themeClasses.card} rounded-none md:rounded-xl md:shadow-xl`}> 
+          <div className={`shadow-lg border border-gray-200 h-full min-h-[57vh] lg:col-span-1 flex-col ${themeClasses.card} rounded-none `}> 
             <div className="p-4 flex flex-col h-full overflow-hidden">
               {/* Logo nằm bên trái, nhỏ vừa và có padding dưới */}
               <div className="flex items-center justify-start mb-4">
@@ -154,10 +154,10 @@ function PdfViewerPage() {
           </div>
 
           {/* ✅ Chỉ hiển thị PdfViewerIframe trên desktop */}
-          <Card className="hidden lg:flex shadow-lg border border-gray-200 w-full h-full lg:col-span-3 flex-col">
-            <CardBody className="p-0 w-full flex-1 flex flex-col h-full rounded-xl overflow-hidden">
+          <div className="hidden lg:flex shadow-lg border border-gray-200 w-full h-full lg:col-span-3 flex-col">
+            <div className="w-full flex-1 flex flex-col h-full overflow-hidden">
               {!selectedPdfUrl ? (
-                <div className="flex items-center justify-center h-full bg-white text-blue-700 p-4 rounded-lg flex-col gap-4">
+                <div className="flex items-center justify-center h-full bg-white text-blue-700 flex-col">
                   <img
                     src="/images/logo_text_library.png"
                     alt="haha"
@@ -167,8 +167,8 @@ function PdfViewerPage() {
               ) : (
                 <PdfViewerIframe pdfUrl={selectedPdfUrl} />
               )}
-            </CardBody>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </div>

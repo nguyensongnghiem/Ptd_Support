@@ -254,11 +254,17 @@ function ChatbotPage() {
         case "get-interface":
           immediateBotResponse = `Đang tra cứu thông tin interface cho router **${fullArgs}**...`;
           break;
-        case "diagnose":
-          immediateBotResponse = `Đang chẩn đoán sự cố: **${fullArgs}**...`;
+        case "get-fo":
+          immediateBotResponse = `Đang lấy thông tin cáp Mobifone: **${fullArgs}**...`;
           break;
-        case "manual":
-          immediateBotResponse = `Đang tìm kiếm hướng dẫn sử dụng cho cẩu model **${fullArgs}**...`;
+        case "get-hardware":
+          immediateBotResponse = `Đang tra cứu thông tin phần cứng **${fullArgs}**...`;
+          break;
+        case "get-alarm":
+          immediateBotResponse = `Đang tra cứu thông tin cảnh báo **${fullArgs}**...`;
+          break;
+        case "ping":
+          immediateBotResponse = `Đang ping đến thiết bị **${fullArgs}**...`;
           break;
         default:
           immediateBotResponse = `Đang xử lý lệnh /${foundCommand.name} với tham số "${fullArgs}"...`;
@@ -360,7 +366,8 @@ function ChatbotPage() {
         card: "bg-white text-gray-900 border-gray-200",
         input: "bg-white text-gray-800 border-gray-300 placeholder-gray-400",
         botBubble: "bg-gray-200 text-secondary-gray border border-gray-300",
-        userBubble: "bg-gradient-to-br from-light-bg-begin to-light-bg-end text-white",
+        userBubble:
+          "bg-gradient-to-br from-light-bg-begin to-light-bg-end text-white",
         header: "bg-white border-gray-200 text-cyan-600",
       };
 
@@ -369,16 +376,13 @@ function ChatbotPage() {
       <Header /> {/* Component Header của bạn */}
       <div
         className={`flex flex-grow items-center justify-center ${themeClasses.bg}
-                     h-[calc(100vh-57px)]
-                     md:px-4 md:py-6
-                     `}
+                     h-[calc(100vh-57px)]`}
       >
         <div
           className={`w-full h-full flex flex-col overflow-hidden border
                      ${themeClasses.card}
                      md:rounded-xl md:shadow-xl
-                     rounded-none shadow-none
-                    
+                     rounded-none shadow-none                    
                      `}
         >
           {/* Header của Chatbot Card */}
