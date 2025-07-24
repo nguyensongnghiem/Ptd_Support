@@ -255,13 +255,13 @@ function ChatbotPage() {
           immediateBotResponse = `Đang tra cứu thông tin interface cho router **${fullArgs}**...`;
           break;
         case "get-fo":
-          immediateBotResponse = `Đang lấy thông tin cáp Mobifone: **${fullArgs}**...`;
+          immediateBotResponse = `Đang lấy thông tin quang trạm **${fullArgs}**...`;
           break;
         case "get-hardware":
-          immediateBotResponse = `Đang tra cứu thông tin phần cứng **${fullArgs}**...`;
+          immediateBotResponse = `Đang tra cứu thông tin phần cứng router **${fullArgs}**...`;
           break;
         case "get-alarm":
-          immediateBotResponse = `Đang tra cứu thông tin cảnh báo **${fullArgs}**...`;
+          immediateBotResponse = `Đang tra cứu thông tin cảnh báo router **${fullArgs}**...`;
           break;
         case "ping":
           immediateBotResponse = `Đang ping đến thiết bị **${fullArgs}**...`;
@@ -455,7 +455,7 @@ function ChatbotPage() {
                 />
                 <span>
                   <Typewriter
-                    words={["Chờ tý nhá ..."]}
+                    words={["Đang suy nghĩ..."]}
                     loop={1}
                     typeSpeed={80}
                     deleteSpeed={50}

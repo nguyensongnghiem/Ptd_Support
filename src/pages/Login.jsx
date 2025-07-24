@@ -10,7 +10,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { auth, setToken } = useAuth();
+  const { auth, setAuthToken } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { refreshToken } = useRefreshToken();
@@ -24,7 +24,7 @@ const Login = () => {
       });
       console.log(response.data);
       const accessToken = response.data.accessToken;
-      setToken(accessToken);
+      setAuthToken(accessToken);
       navigate(from, { replace: true });
     } catch (error) {
       console.log(error.response);
@@ -42,7 +42,7 @@ const Login = () => {
   };
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md space-y-3 rounded-lg bg-white p-8 shadow-md">
+      <div className="w-full max-w-md space-y-3 rounded-none bg-white p-8 shadow-md">
         <h2 className="text-center text-2xl font-bold">Đăng Nhập</h2>
         {error && <div className="text-red-500">{error}</div>}
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -68,7 +68,7 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            className="w-full rounded-md bg-blue-600 py-2 text-white hover:bg-blue-700"
+            className="w-full  bg-primary-orange py-2 text-white hover:bg-orange-800 transition-colors duration-200"
           >
             Đăng Nhập
           </button>
