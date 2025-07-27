@@ -11,12 +11,12 @@ export default withMT({
     },
     extend: {
       colors: {
-        'primary-orange': '#DA5A22',  // Ví dụ: màu cam chính của bạn
-        'secondary-gray': '#3f5078', // Ví dụ: màu xanh phụ
-        'light-bg-begin' :'#747496',
-        'light-bg-end' :'#a6a6dd',
+        'primary-orange': '#FE7743',  // Ví dụ: màu cam chính của bạn
+        'secondary-gray': '#273F4F', // Ví dụ: màu xanh phụ
+        'light-bg-begin' :'#91b9ceff',
+        'light-bg-end' :'#447D9B',
         'primary-purple': '#704f89',
-        'brand-red': '#e74c3c',
+        'brand-red': '#FE7743',
         'custom-gray': { // Bạn cũng có thể định nghĩa các sắc thái
           100: '#f7fafc',
           900: '#1a202c',

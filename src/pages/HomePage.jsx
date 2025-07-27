@@ -1,17 +1,12 @@
-import React from "react";
+
 import { Link } from "react-router-dom";
-import { Card, CardBody, Button, Typography } from "@material-tailwind/react";
-import {
-  DocumentTextIcon,
-  ChatBubbleLeftRightIcon,
-} from "@heroicons/react/24/outline";
-import { T } from "@table-library/react-table-library/index-a318de9b";
+import {  Typography } from "@material-tailwind/react";
 
 function HomePage() {
   return (
     // Đặt min-h-screen cho container ngoài cùng để đảm bảo chiếm hết chiều cao màn hình
     // và sử dụng flex-col để các phần tử xếp dọc
-    <div className="flex flex-col min-h-screen bg-gray-300">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-light-bg-begin to-white">
       {/* Container chính với padding và căn giữa */}
       <div className="container mx-auto flex flex-col flex-grow">
         {/* Logo DNP - giữ nguyên */}
@@ -21,22 +16,15 @@ function HomePage() {
           <img
             src="/images/mobifone.png"
             alt="Mobifone Logo"
-            className="object-cover object-center transition-transform duration-300 ease-in-out h-full w-25"
+            className="object-cover object-center transition-transform duration-300 ease-in-out h-full w-13"
           />
         </div>
-
-        {/* Khối div chứa 3 logo chính - chiếm hết phần còn lại và căn giữa */}
-        {/* flex-grow để chiếm hết không gian còn lại theo chiều dọc */}
-        {/* items-center và justify-center để căn giữa nội dung bên trong */}
         <div className="flex flex-grow items-center justify-center">
-          {/* Vẫn giữ flex-col md:flex-row để các logo xếp hàng ngang trên desktop */}
+          
           <div className="h-full flex flex-col md:flex-row items-center justify-center gap-4 w-full max-w-4xl">
-            {" "}
-            {/* Thêm max-w để giới hạn chiều rộng tổng thể */}
-            {/* Logo App (CraneCare) */}
+            {" "}          
             <div className="w-full max-w-[250px] lg:max-w-[250px] p-4 flex flex-col items-center justify-center text-center">
-              {" "}
-              {/* Thêm text-center và flex-col items-center justify-center */}
+              {" "}              
               <img
                 src="/images/logo_ptd_noBg.png"
                 alt="CraneCare"
@@ -50,8 +38,7 @@ function HomePage() {
             </div>
             {/* Logo Library */}
             <div className="w-full max-w-[100px] lg:max-w-[150px] p-4 flex flex-col items-center justify-center text-center transition-transform duration-300 ease-in-out hover:scale-110">
-              {" "}
-              {/* Thêm flex-col items-center justify-center text-center */}
+              {" "}              
               <Link to="/pdf-viewer">
                 <img
                   src="/images/ptd_logo_libs.png"
