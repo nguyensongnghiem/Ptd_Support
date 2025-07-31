@@ -4,10 +4,11 @@ import remarkGfm from "remark-gfm";
 import { v4 as uuidv4 } from "uuid";
 import { FaPaperPlane, FaRobot, FaUserCircle } from "react-icons/fa";
 import { Typewriter } from "react-simple-typewriter";
-import { Switch, Typography } from "@material-tailwind/react"; // Component Switch có thể cần cấu hình Material Tailwind
-import { Link } from "react-router-dom"; // Giả định bạn có component Link và Header
-import Header from "../components/Header"; // Đảm bảo đường dẫn này đúng
-import commands from "../commands/commands.js"; // Điều chỉnh đường dẫn nếu cần
+import { Switch, Typography } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
+import Header from "../components/Header";
+import commands from "../commands/commands.js";
+
 // Lấy URL từ biến môi trường
 const GENERAL_CHAT_WEBHOOK_URL = import.meta.env.VITE_GENERAL_CHAT_WEBHOOK_URL;
 const COMMAND_WEBHOOK_URL = import.meta.env.VITE_COMMAND_WEBHOOK_URL;
@@ -22,14 +23,17 @@ function ChatbotPage() {
   const [input, setInput] = useState("");
   const [sessionId, setSessionId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [typingOutput, setTypingOutput] = useState(""); // Dùng cho hiệu ứng gõ chữ
-  const [darkMode, setDarkMode] = useState(false); // State cho Dark Mode (có thể uncomment Switch để bật)
+  const [typingOutput, setTypingOutput] = useState("");
+  const [darkMode, setDarkMode] = useState(false);
   const [commandSuggestions, setCommandSuggestions] = useState({});
   const [isCommandMode, setIsCommandMode] = useState(false);
   const [highlightedSuggestionIndex, setHighlightedSuggestionIndex] =
     useState(-1);
+
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+  // THAY ĐỔI LỚN: Sử dụng Map để lưu trữ refs của từng mục gợi ý
+  const suggestionItemRefs = useRef(new Map());
 
   // Cuộn xuống tin nhắn mới nhất khi có tin nhắn hoặc trạng thái thay đổi
   useEffect(() => {
@@ -65,7 +69,19 @@ function ChatbotPage() {
     if (!isLoading && inputRef.current) {
       inputRef.current.focus();
     }
-  }, [isLoading, messages]); // Thêm `messages` vào dependency array cũng giúp kích hoạt lại focus sau khi tin nhắn mới được thêm.
+  }, [isLoading, messages]);
+
+  // THÊM MỚI: Cuộn gợi ý đang được highlight vào tầm nhìn
+  useEffect(() => {
+    if (highlightedSuggestionIndex !== -1 && suggestionItemRefs.current.size > 0) {
+      const highlightedElement = suggestionItemRefs.current.get(
+        highlightedSuggestionIndex
+      );
+      if (highlightedElement) {
+        highlightedElement.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      }
+    }
+  }, [highlightedSuggestionIndex]);
 
   // Xử lý thay đổi input và hiển thị gợi ý lệnh
   const handleInputChange = (e) => {
@@ -107,7 +123,9 @@ function ChatbotPage() {
             commands.reduce((acc, cmd) => {
               if (!acc[cmd.category]) acc[cmd.category] = [];
               acc[cmd.category].push(
-                `- **/${cmd.name}**${cmd.usage ? ` \`${cmd.usage}\`` : ""}: ${cmd.description}`
+                `- **/${cmd.name}**${cmd.usage ? ` \`${cmd.usage}\`` : ""}: ${
+                  cmd.description
+                }`
               );
               return acc;
             }, {})
@@ -189,7 +207,9 @@ function ChatbotPage() {
                 paramDef.options &&
                 !paramDef.options.includes(argValue.toLowerCase())
               ) {
-                validationError = `Tham số "${paramDef.name}" không hợp lệ. Chỉ chấp nhận: ${paramDef.options.join(", ")}.`;
+                validationError = `Tham số "${paramDef.name}" không hợp lệ. Chỉ chấp nhận: ${paramDef.options.join(
+                  ", "
+                )}.`;
                 break;
               }
             }
@@ -311,44 +331,45 @@ function ChatbotPage() {
   const handleKeyDown = (e) => {
     const allSuggestions = Object.values(commandSuggestions).flat();
 
+    // Biến để lưu trữ index mới sau khi xử lý ArrowUp/ArrowDown
+    let newHighlightedIndex = highlightedSuggestionIndex;
+
     if (e.key === "Enter") {
       sendMessage();
     } else if (e.key === "Tab" && isCommandMode && allSuggestions.length > 0) {
       e.preventDefault(); // Ngăn chặn hành vi mặc định của Tab
-      const nextIndex =
+      newHighlightedIndex =
         highlightedSuggestionIndex < allSuggestions.length - 1
           ? highlightedSuggestionIndex + 1
           : 0;
-      setHighlightedSuggestionIndex(nextIndex);
-      const selectedCommand = allSuggestions[nextIndex];
-      setInput(`/${selectedCommand.name} `); // Tự động điền lệnh vào input
+      setHighlightedSuggestionIndex(newHighlightedIndex);
+      setInput(`/${allSuggestions[newHighlightedIndex].name} `); // Cập nhật input với lệnh được highlight
     } else if (
       e.key === "ArrowUp" &&
       isCommandMode &&
       allSuggestions.length > 0
     ) {
       e.preventDefault();
-      const prevIndex =
+      newHighlightedIndex =
         highlightedSuggestionIndex > 0
           ? highlightedSuggestionIndex - 1
           : allSuggestions.length - 1;
-      setHighlightedSuggestionIndex(prevIndex);
-      const selectedCommand = allSuggestions[prevIndex];
-      setInput(`/${selectedCommand.name} `);
+      setHighlightedSuggestionIndex(newHighlightedIndex);
+      setInput(`/${allSuggestions[newHighlightedIndex].name} `);
     } else if (
       e.key === "ArrowDown" &&
       isCommandMode &&
       allSuggestions.length > 0
     ) {
       e.preventDefault();
-      const nextIndex =
+      newHighlightedIndex =
         highlightedSuggestionIndex < allSuggestions.length - 1
           ? highlightedSuggestionIndex + 1
           : 0;
-      setHighlightedSuggestionIndex(nextIndex);
-      const selectedCommand = allSuggestions[nextIndex];
-      setInput(`/${selectedCommand.name} `);
+      setHighlightedSuggestionIndex(newHighlightedIndex);
+      setInput(`/${allSuggestions[newHighlightedIndex].name} `);
     }
+    // Logic cuộn sẽ được xử lý trong useEffect khi `highlightedSuggestionIndex` thay đổi
   };
 
   // Các class cho theme (Dark/Light Mode)
@@ -376,13 +397,12 @@ function ChatbotPage() {
       <Header /> {/* Component Header của bạn */}
       <div
         className={`flex flex-grow items-center justify-center ${themeClasses.bg}
-                     h-[calc(100vh-57px)]`}
+                   h-[calc(100vh-57px)]`}
       >
         <div
           className={`w-full h-full flex flex-col overflow-hidden border
                      ${themeClasses.card}
-                     rounded-none shadow-none                    
-                     `}
+                     rounded-none shadow-none`}
         >
           {/* Header của Chatbot Card */}
           <div
@@ -467,7 +487,7 @@ function ChatbotPage() {
           </div>
 
           {/* Input và Gợi ý lệnh */}
-          <div className={`px-4 py-3 ${themeClasses.header} relative`}>
+          <div className={`px-4 py-3 ${themeClasses.header} relative `}>
             {/* Vùng hiển thị gợi ý lệnh */}
             {isCommandMode && Object.keys(commandSuggestions).length > 0 && (
               <div
@@ -489,6 +509,14 @@ function ChatbotPage() {
                       return (
                         <div
                           key={cmd.name}
+                          // THAY ĐỔI LỚN: Gắn ref vào từng mục gợi ý
+                          ref={(el) => {
+                            if (el) {
+                              suggestionItemRefs.current.set(overallIndex, el);
+                            } else {
+                              suggestionItemRefs.current.delete(overallIndex);
+                            }
+                          }}
                           className={`flex items-center gap-2 p-2 rounded-md cursor-pointer transition-colors duration-200 ${
                             darkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
                           } ${

@@ -10,12 +10,12 @@ import {
   MenuItem,
   MenuList,
   Typography,
-} from "@material-tailwind/react";
+  } from "@material-tailwind/react";
 import React, { useState, useMemo } from "react"; // Import useMemo
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 import { jwtDecode } from "jwt-decode";
-
+import { Link } from "react-router-dom";
 const Header = () => {
   // Removed isLoggedIn as it's not used, isAuthenticated from useAuth is sufficient
   const [searchTerm, setSearchTerm] = useState("");
@@ -55,12 +55,19 @@ const Header = () => {
 
   return (
     <header className="flex w-full items-center gap-x-8 px-4 py-2">
-      <img
-        src="/images/logo_ptd_noBg.png"
-        alt="logo"
-        className="h-full object-contain mr-auto"
-        style={{ maxWidth: "40px" }}
-      />
+      
+        {/* Logo with max-width for responsiveness */}
+        <Link to="/" className="flex items-center mr-auto">
+        {/* Adjusted className for better alignment */} 
+        <img
+          src="/images/logo_ptd_noBg.png"
+          alt="logo"
+          className="h-full object-contain "
+          style={{ maxWidth: "40px" }}
+        />
+        </Link>
+     
+
       <div className="">
         {isAuthenticated ? ( // Use isAuthenticated directly
           <Menu>
@@ -193,8 +200,11 @@ const Header = () => {
             >
               <span>Hủy</span>
             </Button>
-            <Button variant="gradient" onClick={handleLogout}
-              className="rounded-none bg-secondary-gray hover:bg-secondary-gray-700">
+            <Button
+              variant="gradient"
+              onClick={handleLogout}
+              className="rounded-none bg-secondary-gray hover:bg-secondary-gray-700"
+            >
               <span>Đăng xuất</span>
             </Button>
           </DialogFooter>
